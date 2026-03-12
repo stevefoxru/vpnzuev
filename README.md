@@ -1,25 +1,64 @@
-# VPN Telegram Bot
+# VPN Zuev Bot
 
-Telegram bot for selling and managing VPN keys via wg-easy API.
+Telegram-бот для продажи и управления VPN-ключами через `wg-easy` / `amnezia-wg-easy`.
 
-## Features
-- buy VPN key for 7/30/90 days
-- multiple keys per user
-- per-key renewal
-- admin panel in Telegram
-- key revoke via wg-easy API
-- expired key cleanup
+## Возможности
 
-## Setup
+### Для пользователя
+- купить ключ на 7 / 30 / 90 дней
+- иметь несколько ключей
+- скачать конфиг любого своего ключа
+- продлить конкретный ключ
+- посмотреть список своих ключей
 
-1. Install Python 3.12+, PostgreSQL, Docker
-2. Clone repo
-3. Create `.env` from `.env.example`
-4. Create virtualenv
-5. Install dependencies:
-   pip install -r requirements.txt
-6. Run bot:
-   python bot.py
+### Для администратора
+- Telegram-админка
+- просмотр пользователей
+- просмотр ключей пользователя
+- выдача нового ключа пользователю
+- продление конкретного ключа
+- отзыв ключа
 
-## Production
-Use systemd service.
+### Автоматизация
+- очистка просроченных ключей
+- резервное копирование
+- запуск через `systemd`
+
+---
+
+# Архитектура
+
+- `wg-easy` или `amnezia-wg-easy` отвечает за создание и удаление VPN-клиентов
+- Telegram-бот работает через HTTP API панели
+- PostgreSQL хранит пользователей и ключи
+- конфиги ключей сохраняются на сервере
+
+---
+
+# Требования
+
+- Ubuntu 22.04 / 24.04
+- Python 3.11+
+- PostgreSQL
+- Docker
+- `wg-easy` или `amnezia-wg-easy`
+- Telegram Bot Token
+
+---
+
+# Структура проекта
+
+```text
+vpn-bot/
+├── awg.py
+├── bot.py
+├── db.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+├── README.md
+├── configs/
+├── backups/
+└── scripts/
+    ├── backup.sh
+    └── cleanup_expired.py
