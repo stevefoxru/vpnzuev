@@ -58,6 +58,7 @@ class WGEasyAPI:
             timeout=20,
         )
         resp.raise_for_status()
+        out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(resp.text, encoding="utf-8")
 
     def delete_client(self, client_id: str):
@@ -66,7 +67,9 @@ class WGEasyAPI:
             timeout=20,
         )
         if resp.status_code not in (200, 204):
-            raise RuntimeError(f"wg-easy delete client failed: {resp.status_code} {resp.text}")
+            raise RuntimeError(
+                f"wg-easy delete client failed: {resp.status_code} {resp.text}"
+            )
 
 
 def provision_client(client_name: str) -> dict:
