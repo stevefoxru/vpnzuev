@@ -83,7 +83,7 @@ def my_keys_keyboard(keys):
         expires = key["expires_at"].strftime("%Y-%m-%d") if key["expires_at"] else "no-date"
         rows.append([
             InlineKeyboardButton(
-                text=f"{key['client_name']} | {key['client_ip'] or 'no-ip'} | {expires}",
+                text=f"{key['client_name']} | {expires}",
                 callback_data=f"user_key_{key['id']}"
             )
         ])
@@ -241,7 +241,6 @@ async def process_buy(callback: CallbackQuery):
             f"Ключ создан.\n\n"
             f"ID ключа: {key_row['id']}\n"
             f"Тариф: {plan_name}\n"
-            f"IP: {result['client_ip']}\n"
             f"Действует до: {expires_at.strftime('%Y-%m-%d %H:%M')}"
         )
         await callback.message.answer_document(document=document, caption="Ваш новый ключ.")
@@ -291,7 +290,6 @@ async def open_user_key(callback: CallbackQuery):
     await callback.answer()
     await callback.message.answer(
         f"Ключ: {row['client_name']}\n"
-        f"IP: {row['client_ip'] or 'unknown'}\n"
         f"Статус: {row['status']}\n"
         f"Тариф: {row['plan_name']}\n"
         f"До: {expires_text}",
@@ -485,7 +483,6 @@ async def admin_new_key(callback: CallbackQuery):
         await callback.message.answer(
             f"Пользователю tg={target_tg} создан ключ.\n"
             f"ID: {key_row['id']}\n"
-            f"IP: {result['client_ip']}\n"
             f"До: {expires_at.strftime('%Y-%m-%d %H:%M')}"
         )
         await callback.message.answer_document(document=document, caption="Новый ключ пользователя.")
